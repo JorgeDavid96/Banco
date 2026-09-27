@@ -1,3 +1,4 @@
+package vistas;
 import java.awt.event.ActionListener;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -19,10 +20,10 @@ import javax.swing.JToolBar;
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
 
-public class FrmBanco extends JFrame {
+import models.TipoCuenta;
 
-    public String[] encabezadosCuentas = new String[] { "Tipo", "Número", "Titular", "Saldo",
-            "Sobregiro o Límite" };
+public class BancoVista extends JFrame {
+
     public String[] encabezadosTransacciones = new String[] { "Cuenta", "Tipo", "ValorTransaccion", "Saldo" };
     private String[] opcionesTransaccion = new String[] { "Depósito", "Retiro" };
 
@@ -34,7 +35,7 @@ public class FrmBanco extends JFrame {
 
     JTabbedPane tp;
 
-    public FrmBanco() {
+    public BancoVista() {
         setSize(600, 400);
         setTitle("Cuentas Bancarias");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -102,8 +103,8 @@ public class FrmBanco extends JFrame {
 
         cmbTipoCuenta = new JComboBox();
         cmbTipoCuenta.setBounds(220, 10, 100, 25);
-        String[] opciones = new String[] { "Ahorros", "Corriente", "Crédito" };
-        DefaultComboBoxModel mdlTipoCuenta = new DefaultComboBoxModel(opciones);
+        
+        DefaultComboBoxModel mdlTipoCuenta = new DefaultComboBoxModel(TipoCuenta.values());
         cmbTipoCuenta.setModel(mdlTipoCuenta);
         pnlEditarCuenta.add(cmbTipoCuenta);
 
@@ -146,9 +147,6 @@ public class FrmBanco extends JFrame {
         // Panel 2 (siempre visible)
         tblCuentas = new JTable();
         JScrollPane spListaCuentas = new JScrollPane(tblCuentas);
-
-        DefaultTableModel dtm = new DefaultTableModel(null, encabezadosCuentas);
-        tblCuentas.setModel(dtm);
 
         // Agregar componentes
         pnlCuentas.add(pnlEditarCuenta);
@@ -231,6 +229,10 @@ public class FrmBanco extends JFrame {
 
         add(tbBanco, BorderLayout.NORTH);
         add(tp, BorderLayout.CENTER);
+    }
+
+    public void mostrarCientas(String[] datos, String[] encabezados) {
+        DefaultTableModel dtm = new DefaultTableModel(datos, encabezados);
     }
 
     private void btnAgregarCuentaClick() {
