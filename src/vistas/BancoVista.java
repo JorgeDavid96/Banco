@@ -119,14 +119,45 @@ public class BancoVista extends JFrame {
         pnlEditarCuenta.add(txtValor);
 
         JLabel lblPlazo = new JLabel("Plazo");
-        lblPlazo.setBounds(220, 40, 100, 25);
+        lblPlazo.setBounds(430, 40, 100, 25);
         lblPlazo.setVisible(false);
         pnlEditarCuenta.add(lblPlazo);
 
         txtPlazo = new JTextField();
-        txtPlazo.setBounds(320, 40, 100, 25);
+        txtPlazo.setBounds(480, 40, 100, 25);
         txtPlazo.setVisible(false);
         pnlEditarCuenta.add(txtPlazo);
+
+        cmbTipoCuenta.addActionListener(e -> {
+            switch ((TipoCuenta) cmbTipoCuenta.getSelectedItem()) {
+                case AHORROS:
+                    lblValor.setVisible(false);
+                    txtValor.setVisible(false);
+                    lblTasaInteres.setVisible(true);
+                    txtTasaInteres.setVisible(true);
+                    lblPlazo.setVisible(false);
+                    txtPlazo.setVisible(false);
+                    break;
+                case CORRIENTE:
+                    lblValor.setVisible(true);
+                    lblValor.setText("Sobregiro:");
+                    txtValor.setVisible(true);
+                    lblTasaInteres.setVisible(false);
+                    txtTasaInteres.setVisible(true);
+                    lblPlazo.setVisible(false);
+                    txtPlazo.setVisible(false);
+                    break;
+                case CREDITO:
+                    lblValor.setVisible(true);
+                    lblValor.setText("Valor Prestado:");
+                    txtValor.setVisible(true);
+                    lblTasaInteres.setVisible(true);
+                    txtTasaInteres.setVisible(true);
+                    lblPlazo.setVisible(true);
+                    txtPlazo.setVisible(true);
+                    break;
+            }
+        });
 
         JButton btnGuardarCuenta = new JButton("Guardar");
         btnGuardarCuenta.setBounds(220, 70, 100, 25);
@@ -162,8 +193,7 @@ public class BancoVista extends JFrame {
 
         // Panel 1 (oculto por defecto)
         pnlEditarTransaccion = new JPanel();
-        pnlEditarTransaccion.setPreferredSize(new Dimension(pnlEditarTransaccion.getWidth(), 100)); // Altura fija de
-                                                                                                    // 100px
+        pnlEditarTransaccion.setPreferredSize(new Dimension(pnlEditarTransaccion.getWidth(), 100)); // Altura fija de 100px
         pnlEditarTransaccion.setLayout(null);
 
         JLabel lblCuenta = new JLabel("Cuenta");
@@ -212,8 +242,8 @@ public class BancoVista extends JFrame {
         tblTransacciones = new JTable();
         JScrollPane spListaTransacciones = new JScrollPane(tblTransacciones);
 
-        dtm = new DefaultTableModel(null, encabezadosTransacciones);
-        tblTransacciones.setModel(dtm);
+        //dtm = new DefaultTableModel(null, encabezadosTransacciones);
+        //tblTransacciones.setModel(dtm);
 
         // Agregar componentes
         pnlTransacciones.add(pnlEditarTransaccion);
@@ -231,8 +261,9 @@ public class BancoVista extends JFrame {
         add(tp, BorderLayout.CENTER);
     }
 
-    public void mostrarCientas(String[] datos, String[] encabezados) {
+    public void mostrarCuentas(String[][] datos, String[] encabezados) {
         DefaultTableModel dtm = new DefaultTableModel(datos, encabezados);
+        tblCuentas.setModel(dtm);
     }
 
     private void btnAgregarCuentaClick() {

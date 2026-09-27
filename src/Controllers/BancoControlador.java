@@ -12,4 +12,5 @@ public class BancoControlador {
 
     public void mostrarCuentas() {
         vista.mostrarCuentas(CuentaServicio.getDatos(), CuentaServicio.getEncabezados());
+    }
 }

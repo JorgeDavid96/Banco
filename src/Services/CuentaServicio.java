@@ -11,7 +11,7 @@ import models.Cuenta;
 import models.TipoCuenta;
 
 public class CuentaServicio {
-    public String[] encabezadosCuentas = new String[] { "Tipo", "Número", "Titular", "Parametors del producto", "Saldo"};
+    private static String[] encabezados = new String[] { "Tipo", "Número", "Titular", "Parametros del producto", "Saldo"};
 
     private static List<Cuenta> cuentas;
 
@@ -39,14 +39,11 @@ public class CuentaServicio {
         return cuenta;
     }
 
-    public void mostrar(JTable tabla) {
-        
-    }
-
     public static String[][] getDatos() {
         String[][] datos = new String[cuentas.size()][encabezados.length];
-        for(Cuenta cuentas){
+        for(Cuenta cuenta : cuentas){
             
         }
+        return datos;
     }
 }

@@ -24,4 +24,10 @@ public class Ahorros extends Cuenta {
     public void abonarIntereses() {
         setSaldo(getSaldo() + (1 + tasa / 100));
     }
+
+    @Override
+    public String[] getDatos() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getDatos'");
+    }
 }

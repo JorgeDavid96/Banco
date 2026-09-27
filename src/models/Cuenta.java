@@ -42,4 +42,5 @@ public abstract class Cuenta {
     }
 
     //Metodo que cada clase hija llenara con los datos a mostrar
+    public abstract String[] getDatos();
 }
