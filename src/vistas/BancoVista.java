@@ -35,6 +35,8 @@ public class BancoVista extends JFrame {
 
     JTabbedPane tp;
 
+    JButton btnGuardarCuenta;
+
     public BancoVista() {
         setSize(600, 400);
         setTitle("Cuentas Bancarias");
@@ -143,7 +145,7 @@ public class BancoVista extends JFrame {
                     lblValor.setText("Sobregiro:");
                     txtValor.setVisible(true);
                     lblTasaInteres.setVisible(false);
-                    txtTasaInteres.setVisible(true);
+                    txtTasaInteres.setVisible(false);
                     lblPlazo.setVisible(false);
                     txtPlazo.setVisible(false);
                     break;
@@ -159,11 +161,8 @@ public class BancoVista extends JFrame {
             }
         });
 
-        JButton btnGuardarCuenta = new JButton("Guardar");
+        btnGuardarCuenta = new JButton("Guardar");
         btnGuardarCuenta.setBounds(220, 70, 100, 25);
-        btnGuardarCuenta.addActionListener(evt -> {
-            btnGuardarCuentaClick();
-        });
         pnlEditarCuenta.add(btnGuardarCuenta);
 
         JButton btnCancelarCuenta = new JButton("Cancelar");
@@ -261,6 +260,48 @@ public class BancoVista extends JFrame {
         add(tp, BorderLayout.CENTER);
     }
 
+    //GETTERS
+    public TipoCuenta getTipoCuentaSeleccionada() {
+        return (TipoCuenta) cmbTipoCuenta.getSelectedItem();
+    }
+
+    public String getTitular() {
+        return txtTitular.getText();
+    }
+
+    public String getNumero() {
+        return txtNumero.getText();
+    }
+
+    public double getTasaInteres() {
+        try {
+            return Double.parseDouble(txtTasaInteres.getText());
+        } catch (Exception ex) {
+            return 0;
+        }
+    }
+
+    public double getValor() {
+        try {
+            return Double.parseDouble(txtValor.getText());
+        } catch (Exception ex) {
+            return 0;
+        }
+    }
+
+    public int getPlazo() {
+        try {
+            return Integer.parseInt(txtPlazo.getText());
+        } catch (Exception ex) {
+            return 0;
+        }
+    }
+
+    //SETTERS
+    public void setGuardarCuentaClick(ActionListener escucharEventos) {
+        btnGuardarCuenta.addActionListener(escucharEventos);
+    }
+
     public void mostrarCuentas(String[][] datos, String[] encabezados) {
         DefaultTableModel dtm = new DefaultTableModel(datos, encabezados);
         tblCuentas.setModel(dtm);
@@ -276,9 +317,8 @@ public class BancoVista extends JFrame {
 
     }
 
-    private void btnGuardarCuentaClick() {
+    public void ocultarEdicionCuenta() {
         pnlEditarCuenta.setVisible(false);
-
     }
 
     private void btnCancelarCuentaClick() {
@@ -301,5 +341,4 @@ public class BancoVista extends JFrame {
         pnlEditarTransaccion.setVisible(false);
 
     }
-
 }

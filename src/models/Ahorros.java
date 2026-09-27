@@ -1,5 +1,7 @@
 package models;
 
+import java.text.DecimalFormat;
+
 public class Ahorros extends Cuenta {
     private double tasa;
 
@@ -27,7 +29,13 @@ public class Ahorros extends Cuenta {
 
     @Override
     public String[] getDatos() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getDatos'");
+        DecimalFormat df = new DecimalFormat("#,##0.00");
+        return new String[] {
+            "AHORROS",
+            getNumero(),
+            getTitular(),
+            "Tasa Interes = " + df.format(tasa) + "%",
+            df.format(getSaldo())
+        };
     }
 }

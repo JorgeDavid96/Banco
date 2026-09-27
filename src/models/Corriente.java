@@ -1,5 +1,7 @@
 package models;
 
+import java.text.DecimalFormat;
+
 public class Corriente extends Cuenta {
     private double sobreGiro;
 
@@ -23,7 +25,13 @@ public class Corriente extends Cuenta {
 
     @Override
     public String[] getDatos() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getDatos'");
+        DecimalFormat df = new DecimalFormat("#,##0.00");
+        return new String[] {
+            "CORRIENTE",
+            getNumero(),
+            getTitular(),
+            "Sobre Giro = $" + df.format(sobreGiro),
+            df.format(getSaldo())
+        };
     }
 }

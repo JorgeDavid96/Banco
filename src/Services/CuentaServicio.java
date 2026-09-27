@@ -1,8 +1,7 @@
 package Services;
 
+import java.util.ArrayList;
 import java.util.List;
-
-import javax.swing.JTable;
 
 import models.Ahorros;
 import models.Corriente;
@@ -13,7 +12,7 @@ import models.TipoCuenta;
 public class CuentaServicio {
     private static String[] encabezados = new String[] { "Tipo", "Número", "Titular", "Parametros del producto", "Saldo"};
 
-    private static List<Cuenta> cuentas;
+    private static List<Cuenta> cuentas = new ArrayList<>();
 
     public static String[] getEncabezados() {
         return encabezados;
@@ -41,8 +40,16 @@ public class CuentaServicio {
 
     public static String[][] getDatos() {
         String[][] datos = new String[cuentas.size()][encabezados.length];
+        int fila = 0;
         for(Cuenta cuenta : cuentas){
-            
+            int columna = 0;
+            for(var dato : cuenta.getDatos()) {
+                if (columna < encabezados.length) {
+                    datos[fila][columna] = dato;
+                }
+                columna++;
+            }
+            fila++;
         }
         return datos;
     }
