@@ -34,4 +34,20 @@ public class Corriente extends Cuenta {
             df.format(getSaldo())
         };
     }
+
+    @Override
+    public boolean procesarTransaccion(TipoTransaccion tipo, double valor) {
+        switch (tipo) {
+            case DEPOSITO:
+                return depositar(valor);
+            case RETIRO:
+                return retirar(valor);
+        }
+        return false;
+    }
+
+    @Override
+    public String toString() {
+        return "CORRIENTE $[" + getNumero() + "] Titular[" + getTitular() + "]";
+    }
 }

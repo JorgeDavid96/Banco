@@ -1,6 +1,10 @@
 package Controllers;
 
+import javax.swing.JOptionPane;
+
 import Services.CuentaServicio;
+import Services.TransaccionServicio;
+import models.Cuenta;
 import models.TipoCuenta;
 import vistas.BancoVista;
 
@@ -10,11 +14,18 @@ public class BancoControlador {
     public BancoControlador(BancoVista vista) {
         this.vista = vista;
         this.vista.setGuardarCuentaClick(evento -> agregarCuenta());
+        this.vista.setEliminarCuentaClick(evento -> eliminarCuenta());
+        this.vista.setGuardarTransaccionClick(vento -> agregarTransaccion());
         mostrarCuentas();
+        mostrarTransacciones();
     }
 
     public void mostrarCuentas() {
         vista.mostrarCuentas(CuentaServicio.getDatos(), CuentaServicio.getEncabezados());
+    }
+
+    public void mostrarTransacciones() {
+        vista.mostrarTransacciones(TransaccionServicio.getDatos(), CuentaServicio.getEncabezados());
     }
 
     private void agregarCuenta() {
@@ -30,9 +41,46 @@ public class BancoControlador {
         var valorPrestado = tipo == TipoCuenta.CREDITO ?
             vista.getValor() : 0;
 
-        CuentaServicio.agregar(tipo, titular, numero, tasaInteres, sobreGiro, plazo, valorPrestado);
+        var cuentaAgregada = CuentaServicio.agregar(tipo, titular, numero, tasaInteres, sobreGiro, plazo, valorPrestado);
         
+        if (cuentaAgregada != null) {
+            vista.setCuentaTransaccion(cuentaAgregada.toString());
+            mostrarCuentas();
+        }
+        vista.setCuentaTransaccion(cuentaAgregada.toString());
         vista.ocultarEdicionCuenta();
         mostrarCuentas();
+    }
+
+    private void eliminarCuenta() {
+        if (vista.getFilaCuentaSeleccionada() >= 0) {
+            if (vista.confirmar("Esta seguro de retirar la cuenta?")) {
+                CuentaServicio.eliminar(vista.getFilaCuentaSeleccionada());
+                vista.quitarCuentaTransaccion(vista.getFilaCuentaSeleccionada());
+                mostrarCuentas();
+            }
+        } else {
+            vista.mostrarMensaje("Debe seleccionar una cuenta");
+        }
+    }
+
+    private void agregarTransaccion() {
+        var tipo = vista.getTipoCuentaSeleccionada();
+        var cuenta = vista.getIndiceCuentaSeleccionada() >= 0 ? Cuenta.get(vista.getIndiceCuentaSeleccionada()) : null;
+        var valor = vista.getValorTransaccion();
+
+        if (cuenta == null) {
+            vista.mostrarMensaje("Debe selleccionar una cuenta");
+            return;
+        }
+        
+        var transaccion = TransaccionServicio.agregar(cuenta, tipo, valor);
+
+        if (transaccion != null) {
+            vista.ocultarEdicionTransaccion();
+            mostrarTransacciones();
+        } else {
+
+        }
     }
 }

@@ -81,4 +81,25 @@ public class Credito extends Cuenta{
             "Saldo Adeudado = $" + df.format(getSaldoDeuda())
         };
     }
+
+    @Override
+    public boolean procesarTransaccion(TipoTransaccion tipo, double valor) {
+        switch (tipo) {
+            case DEPOSITO:
+                return depositar(valor);
+            case RETIRO:
+                return retirar(valor);
+        }
+        return false;
+    }
+
+    @Override
+    public String toString() {
+        return "CREDITO #[" + getNumero() + "] Titular [" + getTitular() + "]";
+    }
+
+    @Override
+    public double getSaldoTransaccion(TipoTransaccion tipo) {
+        return tipo == TipoTransaccion.RETIRO ? getSaldoRetiro() : getSaldoDeuda();
+    }
 }

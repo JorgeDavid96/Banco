@@ -11,6 +11,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -20,12 +21,11 @@ import javax.swing.JToolBar;
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
 
+import models.Cuenta;
 import models.TipoCuenta;
+import models.TipoTransaccion;
 
 public class BancoVista extends JFrame {
-
-    public String[] encabezadosTransacciones = new String[] { "Cuenta", "Tipo", "ValorTransaccion", "Saldo" };
-    private String[] opcionesTransaccion = new String[] { "Depósito", "Retiro" };
 
     private JTable tblCuentas, tblTransacciones;
     private JPanel pnlEditarCuenta, pnlEditarTransaccion;
@@ -36,6 +36,7 @@ public class BancoVista extends JFrame {
     JTabbedPane tp;
 
     JButton btnGuardarCuenta;
+    JButton btnQuitarCuenta;
 
     public BancoVista() {
         setSize(600, 400);
@@ -52,12 +53,9 @@ public class BancoVista extends JFrame {
         });
         tbBanco.add(btnAgregarCuenta);
 
-        JButton btnQuitarCuenta = new JButton();
+        btnQuitarCuenta = new JButton();
         btnQuitarCuenta.setIcon(new ImageIcon(getClass().getResource("/iconos/QuitarCuenta.png")));
         btnQuitarCuenta.setToolTipText("Quitar Cuenta");
-        btnQuitarCuenta.addActionListener(evt -> {
-            btnQuitarCuentaClick();
-        });
         tbBanco.add(btnQuitarCuenta);
 
         JButton btnTransaccion = new JButton();
@@ -200,7 +198,7 @@ public class BancoVista extends JFrame {
         pnlEditarTransaccion.add(lblCuenta);
 
         cmbCuenta = new JComboBox();
-        cmbCuenta.setBounds(110, 10, 100, 25);
+        cmbCuenta.setBounds(110, 10, 400, 25);
         pnlEditarTransaccion.add(cmbCuenta);
 
         JLabel lblTipo = new JLabel("Tipo");
@@ -209,7 +207,7 @@ public class BancoVista extends JFrame {
 
         cmbTipoTransaccion = new JComboBox();
         cmbTipoTransaccion.setBounds(110, 40, 100, 25);
-        DefaultComboBoxModel mdlTipoTransaccion = new DefaultComboBoxModel(opcionesTransaccion);
+        DefaultComboBoxModel mdlTipoTransaccion = new DefaultComboBoxModel(TipoTransaccion.values());
         cmbTipoTransaccion.setModel(mdlTipoTransaccion);
         pnlEditarTransaccion.add(cmbTipoTransaccion);
 
@@ -240,9 +238,6 @@ public class BancoVista extends JFrame {
         // Panel 2 (siempre visible)
         tblTransacciones = new JTable();
         JScrollPane spListaTransacciones = new JScrollPane(tblTransacciones);
-
-        //dtm = new DefaultTableModel(null, encabezadosTransacciones);
-        //tblTransacciones.setModel(dtm);
 
         // Agregar componentes
         pnlTransacciones.add(pnlEditarTransaccion);
@@ -297,48 +292,79 @@ public class BancoVista extends JFrame {
         }
     }
 
+    public int getFilaCuentaSeleccionada() {
+        return tblCuentas.getSelectedRow();
+    }
+
     //SETTERS
     public void setGuardarCuentaClick(ActionListener escucharEventos) {
         btnGuardarCuenta.addActionListener(escucharEventos);
     }
+
+    public void setEliminarCuentaClick(ActionListener escucharEventos) {
+        btnQuitarCuenta.addActionListener(escucharEventos);
+    }
+
+    public void setCuentaTransaccion(String datosCuenta) {
+        cmbCuenta.addItem(datosCuenta);
+    }
+
+    public void setGuardarTransaccionClick(ActionListener escucharEventos) {
+        
+    }
+    //Otros metodos publicos
 
     public void mostrarCuentas(String[][] datos, String[] encabezados) {
         DefaultTableModel dtm = new DefaultTableModel(datos, encabezados);
         tblCuentas.setModel(dtm);
     }
 
-    private void btnAgregarCuentaClick() {
-        pnlEditarCuenta.setVisible(true);
-        tp.setSelectedIndex(0);
-
-    }
-
-    private void btnQuitarCuentaClick() {
-
+    public void mostrarTransacciones(String[][] datos, String[] encabezados) {
+        DefaultTableModel dtm = new DefaultTableModel(datos, encabezados);
+        tblTransacciones.setModel(dtm);
     }
 
     public void ocultarEdicionCuenta() {
         pnlEditarCuenta.setVisible(false);
     }
 
+    public boolean confirmar(String mensaje){
+        if (JOptionPane.showConfirmDialog(null, mensaje, "Confirmar", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+        return true;
+        }
+        return false;
+    }
+
+    public void mostrarMensaje(String mensaje) {
+        JOptionPane.showMessageDialog(null, mensaje);
+    }
+
+    public void quitarCuentaTransaccion(int posicion) {
+        if (posicion >= 0 && posicion < cmbCuenta.getItemCount()) {
+            cmbCuenta.removeItemAt(posicion);
+        }
+    }
+
+    //Eventos
+    private void btnAgregarCuentaClick() {
+        pnlEditarCuenta.setVisible(true);
+        tp.setSelectedIndex(0);
+    }
+
     private void btnCancelarCuentaClick() {
         pnlEditarCuenta.setVisible(false);
-
     }
 
     private void btnTransaccionClick() {
         pnlEditarTransaccion.setVisible(true);
         tp.setSelectedIndex(1);
-
     }
 
     private void btnGuardarTransaccionClick() {
         pnlEditarTransaccion.setVisible(false);
-
     }
 
     private void btnCancelarTransaccionClick() {
         pnlEditarTransaccion.setVisible(false);
-
     }
 }

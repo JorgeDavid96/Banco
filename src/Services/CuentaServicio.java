@@ -53,4 +53,12 @@ public class CuentaServicio {
         }
         return datos;
     }
+
+    public static boolean eliminar(int posicion) {
+        if (posicion >= 0 && posicion < cuentas.size()) {
+            cuentas.remove(posicion);
+            return true;
+        }
+        return false;
+    }
 }
