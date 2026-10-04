@@ -40,6 +40,7 @@ public abstract class Cuenta {
     public boolean depositar(double valor){
         if (valor > 0) {
             setSaldo(saldo + valor);
+            return true;
         }
         return false;
     }

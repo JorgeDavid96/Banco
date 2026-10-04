@@ -55,7 +55,7 @@ public class Credito extends Cuenta{
             var intereses = getSaldoDeuda() * tasaInteres / 100;
             var abonoCapital = valor - intereses;
             if (abonoCapital <= getSaldoDeuda()) {
-                return depositar(valor);
+                return depositar(abonoCapital);
             }
         }
         return false;
@@ -86,7 +86,7 @@ public class Credito extends Cuenta{
     public boolean procesarTransaccion(TipoTransaccion tipo, double valor) {
         switch (tipo) {
             case DEPOSITO:
-                return depositar(valor);
+                return pagar(valor);
             case RETIRO:
                 return retirar(valor);
         }

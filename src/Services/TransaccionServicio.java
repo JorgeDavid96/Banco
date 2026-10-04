@@ -21,7 +21,7 @@ public class TransaccionServicio {
         return encabezados;
     }
 
-    public String[][] getDatos() {
+    public static String[][] getDatos() {
         String[][] datos = new String[transacciones.size()][encabezados.length];
         int fila = 0;
         for(var transaccion : transacciones) {
@@ -29,8 +29,8 @@ public class TransaccionServicio {
             for(var dato : transaccion.getDatos()) {
                 if (columna < encabezados.length) {
                     datos[fila][columna] = dato;
-                    columna++;
                 }
+                columna++;
             }
             fila++;
         }
@@ -41,7 +41,7 @@ public class TransaccionServicio {
         Transaccion transaccion = null;
         if (cuenta.procesarTransaccion(tipo, valor)) {
             transaccion = new Transaccion(cuenta, tipo, valor, cuenta.getSaldoTransaccion(tipo));
-            transacciones.add(transaccion)
+            transacciones.add(transaccion);
         }
         return transaccion;
     }

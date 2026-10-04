@@ -1,10 +1,7 @@
 package Controllers;
 
-import javax.swing.JOptionPane;
-
 import Services.CuentaServicio;
 import Services.TransaccionServicio;
-import models.Cuenta;
 import models.TipoCuenta;
 import vistas.BancoVista;
 
@@ -16,6 +13,7 @@ public class BancoControlador {
         this.vista.setGuardarCuentaClick(evento -> agregarCuenta());
         this.vista.setEliminarCuentaClick(evento -> eliminarCuenta());
         this.vista.setGuardarTransaccionClick(vento -> agregarTransaccion());
+        
         mostrarCuentas();
         mostrarTransacciones();
     }
@@ -25,7 +23,7 @@ public class BancoControlador {
     }
 
     public void mostrarTransacciones() {
-        vista.mostrarTransacciones(TransaccionServicio.getDatos(), CuentaServicio.getEncabezados());
+        vista.mostrarTransacciones(TransaccionServicio.getDatos(), TransaccionServicio.getEncabezados());
     }
 
     private void agregarCuenta() {
@@ -40,16 +38,15 @@ public class BancoControlador {
             vista.getPlazo() : 0;
         var valorPrestado = tipo == TipoCuenta.CREDITO ?
             vista.getValor() : 0;
-
         var cuentaAgregada = CuentaServicio.agregar(tipo, titular, numero, tasaInteres, sobreGiro, plazo, valorPrestado);
         
         if (cuentaAgregada != null) {
             vista.setCuentaTransaccion(cuentaAgregada.toString());
             mostrarCuentas();
+            vista.ocultarEdicionCuenta();
+        } else {
+            vista.mostrarMensaje("La cuenta no pudo se agregada");
         }
-        vista.setCuentaTransaccion(cuentaAgregada.toString());
-        vista.ocultarEdicionCuenta();
-        mostrarCuentas();
     }
 
     private void eliminarCuenta() {
@@ -65,8 +62,8 @@ public class BancoControlador {
     }
 
     private void agregarTransaccion() {
-        var tipo = vista.getTipoCuentaSeleccionada();
-        var cuenta = vista.getIndiceCuentaSeleccionada() >= 0 ? Cuenta.get(vista.getIndiceCuentaSeleccionada()) : null;
+        var tipo = vista.getTipoTransaccionSeleccionada();
+        var cuenta = vista.getIndiceCuentaSeleccionada() >= 0 ? CuentaServicio.get(vista.getIndiceCuentaSeleccionada()) : null;
         var valor = vista.getValorTransaccion();
 
         if (cuenta == null) {
@@ -80,7 +77,7 @@ public class BancoControlador {
             vista.ocultarEdicionTransaccion();
             mostrarTransacciones();
         } else {
-
+            vista.mostrarMensaje("La transaccion no pudo ser agregada");
         }
     }
 }

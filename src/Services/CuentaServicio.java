@@ -18,6 +18,13 @@ public class CuentaServicio {
         return encabezados;
     };
 
+    public static Cuenta get(int posicion) {
+        if (posicion >= 0 && posicion < cuentas.size()) {
+            return cuentas.get(posicion);
+        }
+        return null;
+    }
+
     public static Cuenta agregar(TipoCuenta tipo, String titular, String numero, double tasaInteres, double Sobregiro, int plazo, double valorPrestado) {
         Cuenta cuenta = null;
 
