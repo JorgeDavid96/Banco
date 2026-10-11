@@ -1,8 +1,8 @@
-package Controllers;
+package controllers;
 
-import Services.CuentaServicio;
-import Services.TransaccionServicio;
 import models.TipoCuenta;
+import services.CuentaServicio;
+import services.TransaccionServicio;
 import vistas.BancoVista;
 
 public class BancoControlador {
@@ -38,7 +38,7 @@ public class BancoControlador {
             vista.getPlazo() : 0;
         var valorPrestado = tipo == TipoCuenta.CREDITO ?
             vista.getValor() : 0;
-        var cuentaAgregada = CuentaServicio.agregar(tipo, titular, numero, tasaInteres, sobreGiro, plazo, valorPrestado);
+        var cuentaAgregada = CuentaServicio.agregar(tipo, new DatosCuenta(titular, numero, tasaInteres, sobreGiro, plazo, valorPrestado));
         
         if (cuentaAgregada != null) {
             vista.setCuentaTransaccion(cuentaAgregada.toString());

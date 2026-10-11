@@ -1,4 +1,4 @@
-import Controllers.BancoControlador;
+import controllers.BancoControlador;
 import vistas.BancoVista;
 
 public class App {

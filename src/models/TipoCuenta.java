@@ -3,5 +3,6 @@ package models;
 public enum TipoCuenta {
     AHORROS,
     CORRIENTE,
-    CREDITO
+    CREDITO,
+    CREDITO_ROTATIVO
 }

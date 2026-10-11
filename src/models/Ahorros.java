@@ -2,7 +2,12 @@ package models;
 
 import java.text.DecimalFormat;
 
-public class Ahorros extends Cuenta {
+import interfaces.IConsignable;
+import interfaces.IGeneraIntereses;
+import interfaces.IMostrable;
+import interfaces.IRetirable;
+
+public class Ahorros extends Cuenta implements IConsignable, IGeneraIntereses, IRetirable, IMostrable {
     private double tasa;
 
     public Ahorros(String titular, String numero, double tasa) {
@@ -15,6 +20,26 @@ public class Ahorros extends Cuenta {
     }
 
     @Override
+    public boolean procesarTransaccion(TipoTransaccion tipo, double valor) {
+        switch (tipo) {
+            case DEPOSITO:
+                return consignar(valor);
+            case RETIRO:
+                return retirar(valor);
+        }
+        return false;
+    }
+
+    @Override
+    public boolean consignar(double valor) {
+        if (valor > 0) {
+            setSaldo(getSaldo() + valor);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
     public boolean retirar(double valor) {
         if (valor > 0 && valor <= getSaldo()) {
             setSaldo(getSaldo() - valor);
@@ -24,18 +49,12 @@ public class Ahorros extends Cuenta {
     }
 
     @Override
-    public boolean procesarTransaccion(TipoTransaccion tipo, double valor) {
-        switch (tipo) {
-            case DEPOSITO:
-                return depositar(valor);
-            case RETIRO:
-                return retirar(valor);
-        }
-        return false;
+    public double calcularIntereses() {
+        return getSaldo() * + tasa / 100;
     }
 
     public void abonarIntereses() {
-        setSaldo(getSaldo() + (1 + tasa / 100));
+        setSaldo(getSaldo() + calcularIntereses());
     }
 
     @Override

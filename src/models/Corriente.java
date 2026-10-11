@@ -2,7 +2,11 @@ package models;
 
 import java.text.DecimalFormat;
 
-public class Corriente extends Cuenta {
+import interfaces.IConsignable;
+import interfaces.IMostrable;
+import interfaces.IRetirable;
+
+public class Corriente extends Cuenta implements IConsignable, IRetirable, IMostrable {
     private double sobreGiro;
 
     public Corriente(String titular, String numero, double tasa) {
@@ -12,6 +16,15 @@ public class Corriente extends Cuenta {
 
     public double getSobreGiro() {
         return sobreGiro;
+    }
+
+    @Override
+    public boolean consignar(double valor) {
+        if (valor > 0) {
+            setSaldo(getSaldo() + valor);
+            return true;
+        }
+        return false;
     }
 
     @Override 
@@ -39,7 +52,7 @@ public class Corriente extends Cuenta {
     public boolean procesarTransaccion(TipoTransaccion tipo, double valor) {
         switch (tipo) {
             case DEPOSITO:
-                return depositar(valor);
+                return consignar(valor);
             case RETIRO:
                 return retirar(valor);
         }
