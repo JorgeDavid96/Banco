@@ -2,11 +2,10 @@ package models;
 
 import java.text.DecimalFormat;
 
-import interfaces.IMostrable;
 import interfaces.IPagable;
 import interfaces.IRetirable;
 
-public class Credito extends Cuenta implements IRetirable, IPagable, IMostrable {
+public class Credito extends Cuenta implements IRetirable, IPagable {
     private double valorPrestado;
     private double tasaInteres;
     private int plazo;
@@ -63,6 +62,7 @@ public class Credito extends Cuenta implements IRetirable, IPagable, IMostrable 
             var intereses = getSaldoDeuda() * tasaInteres / 100;
             var abonoCapital = valor - intereses;
             if (abonoCapital > 0 && abonoCapital <= getSaldoDeuda()) {
+                setSaldo(getSaldo() + abonoCapital);
                 return true;
             }
         }
@@ -71,7 +71,7 @@ public class Credito extends Cuenta implements IRetirable, IPagable, IMostrable 
 
     @Override
     public boolean retirar(double valor) {
-        if (valor > 0 && valor <= valorPrestado - valorRetirado) {
+        if (valor > 0 && valor <= valorPrestado - getSaldoRetiro()) {
             valorRetirado += valor;
             return true;
         }

@@ -1,12 +1,10 @@
 package models;
 
 import java.text.DecimalFormat;
-
 import interfaces.IConsignable;
-import interfaces.IMostrable;
 import interfaces.IRetirable;
 
-public class Corriente extends Cuenta implements IConsignable, IRetirable, IMostrable {
+public class Corriente extends Cuenta implements IConsignable, IRetirable {
     private double sobreGiro;
 
     public Corriente(String titular, String numero, double tasa) {
@@ -29,11 +27,16 @@ public class Corriente extends Cuenta implements IConsignable, IRetirable, IMost
 
     @Override 
     public boolean retirar(double valor) {
-        if (valor > 0 && valor <= getSaldo() + sobreGiro) {
+        if (valor > 0 && valor <= getSaldoRetiro()) {
             setSaldo(getSaldo() - valor);
             return true;
         }
         return false;
+    }
+
+    @Override
+    public double getSaldoRetiro() {
+        return getSaldo() + sobreGiro;
     }
 
     @Override

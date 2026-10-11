@@ -4,10 +4,9 @@ import java.text.DecimalFormat;
 
 import interfaces.IConsignable;
 import interfaces.IGeneraIntereses;
-import interfaces.IMostrable;
 import interfaces.IRetirable;
 
-public class Ahorros extends Cuenta implements IConsignable, IGeneraIntereses, IRetirable, IMostrable {
+public class Ahorros extends Cuenta implements IConsignable, IGeneraIntereses, IRetirable {
     private double tasa;
 
     public Ahorros(String titular, String numero, double tasa) {
@@ -49,8 +48,13 @@ public class Ahorros extends Cuenta implements IConsignable, IGeneraIntereses, I
     }
 
     @Override
+    public double getSaldoRetiro() {
+        return getSaldo();
+    }
+
+    @Override
     public double calcularIntereses() {
-        return getSaldo() * + tasa / 100;
+        return getSaldo() * tasa / 100;
     }
 
     public void abonarIntereses() {

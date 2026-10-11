@@ -130,7 +130,8 @@ public class BancoVista extends JFrame {
         pnlEditarCuenta.add(txtPlazo);
 
         cmbTipoCuenta.addActionListener(e -> {
-            switch ((TipoCuenta) cmbTipoCuenta.getSelectedItem()) {
+            var tipo = (TipoCuenta) cmbTipoCuenta.getSelectedItem();
+            switch (tipo) {
                 case AHORROS:
                     lblValor.setVisible(false);
                     txtValor.setVisible(false);
@@ -148,9 +149,9 @@ public class BancoVista extends JFrame {
                     lblPlazo.setVisible(false);
                     txtPlazo.setVisible(false);
                     break;
-                case CREDITO:
+                case CREDITO, CREDITO_ROTATIVO:
                     lblValor.setVisible(true);
-                    lblValor.setText("Valor Prestado:");
+                    lblValor.setText(tipo == TipoCuenta.CREDITO ? "Valor Prestado:" : "Cupo");
                     txtValor.setVisible(true);
                     lblTasaInteres.setVisible(true);
                     txtTasaInteres.setVisible(true);

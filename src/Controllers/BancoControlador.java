@@ -1,6 +1,7 @@
 package controllers;
 
 import models.TipoCuenta;
+import models.DatosCuenta;
 import services.CuentaServicio;
 import services.TransaccionServicio;
 import vistas.BancoVista;
@@ -30,14 +31,15 @@ public class BancoControlador {
         var tipo = vista.getTipoCuentaSeleccionada();
         var titular = vista.getTitular();
         var numero = vista.getNumero();
-        var tasaInteres = tipo == TipoCuenta.AHORROS || tipo == TipoCuenta.CREDITO ?
+        var tasaInteres = tipo == TipoCuenta.AHORROS || tipo == TipoCuenta.CREDITO || tipo == TipoCuenta.CREDITO_ROTATIVO ?
             vista.getTasaInteres() : 0;
         var sobreGiro = tipo == TipoCuenta.CORRIENTE ?
             vista.getValor() : 0;
-        var plazo = tipo == TipoCuenta.CREDITO ?
+        var plazo = tipo == TipoCuenta.CREDITO || tipo == TipoCuenta.CREDITO_ROTATIVO ?
             vista.getPlazo() : 0;
-        var valorPrestado = tipo == TipoCuenta.CREDITO ?
+        var valorPrestado = tipo == TipoCuenta.CREDITO || tipo == TipoCuenta.CREDITO_ROTATIVO?
             vista.getValor() : 0;
+
         var cuentaAgregada = CuentaServicio.agregar(tipo, new DatosCuenta(titular, numero, tasaInteres, sobreGiro, plazo, valorPrestado));
         
         if (cuentaAgregada != null) {
